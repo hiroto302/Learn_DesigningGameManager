@@ -6,6 +6,15 @@ using UnityEngine.SceneManagement;
 
 [System.Serializable] public class EventGamState : UnityEvent<GameManager.GameState, GameManager.GameState>{}
 
+/*ToDos:
+    Add a method to enter/exit pause
+    Trigger method via 'escape' key
+    Trigger method via pause menu
+    Pause simulation when in pause state
+    Modify cursor to use pointer when in pause state
+
+*/
+
 public class GameManager : Singleton<GameManager>
 {
     // what level the game is current in
