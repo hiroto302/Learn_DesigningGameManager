@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager : MonoBehaviour
+public class UIManager : Singleton<UIManager>
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private MainMenu _mainMenu;
+    [SerializeField] private Camera _dummyCamera;
+
+    private void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            _mainMenu.FadeOut();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetDummyCameraActive(bool active)
     {
-        
+        _dummyCamera.gameObject.SetActive(active);
     }
 }
