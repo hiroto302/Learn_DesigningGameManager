@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
+// using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-[System.Serializable] public class EventGamState : UnityEvent<GameManager.GameState, GameManager.GameState>{}
+// [System.Serializable] public class EventGamState : UnityEvent<GameManager.GameState, GameManager.GameState>{}
 
 /*ToDos:
     Add a method to enter/exit pause
@@ -29,7 +29,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     public GameObject[] SystemPrefabs;
-    public EventGamState OnGameStateChange;
+    public Events.EventGamState OnGameStateChange;
     private List<GameObject> _instancedSystemPrefabs;
     GameState _currentGameState = GameState.PREGAME;
     private string _currentLevelName = string.Empty;
@@ -51,6 +51,8 @@ public class GameManager : Singleton<GameManager>
 
 
         InstantiateSystemPrefabs();
+
+        UIManager.Instance.OnMainMenuFadeComplete.AddListener(HandleMainMenuFadeComplete);
 
         // LoadLevel("Main");
     }
@@ -89,6 +91,14 @@ public class GameManager : Singleton<GameManager>
     void OnUnloadOperationComplete(AsyncOperation ao)
     {
         Debug.Log("Unload Complete.");
+    }
+
+    void HandleMainMenuFadeComplete(bool fadeOut)
+    {
+        if(!fadeOut)
+        {
+            UnloadLevel(_currentLevelName);
+        }
     }
 
     void UpdateState(GameState state)
@@ -188,6 +198,17 @@ public class GameManager : Singleton<GameManager>
 
         // condition ? true : false 上記のコードを一行で書くことができる
         UpdateState(_currentGameState == GameState.RUNNING ? GameState.PAUSED : GameState.RUNNING);
+    }
+
+    public void RestartGame()
+    {
+        UpdateState(GameState.PREGAME);
+    }
+
+    public void QuitGame()
+    {
+        // implement features for quitting
+        Application.Quit();
     }
 }
 
