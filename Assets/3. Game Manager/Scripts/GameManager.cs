@@ -12,7 +12,6 @@ using UnityEngine.SceneManagement;
     Trigger method via pause menu
     Pause simulation when in pause state
     Modify cursor to use pointer when in pause state
-
 */
 
 public class GameManager : Singleton<GameManager>
@@ -56,6 +55,20 @@ public class GameManager : Singleton<GameManager>
         // LoadLevel("Main");
     }
 
+    private void Update()
+    {
+        if(CurrentGameState == GameManager.GameState.PREGAME)
+        {
+            return;
+        }
+
+        // Trigger method via 'escape' key
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            TogglePause();
+        }
+    }
+
     void OnLoadOperationComplete(AsyncOperation ao)
     {
         if(_loadOperations.Contains(ao))
@@ -86,10 +99,13 @@ public class GameManager : Singleton<GameManager>
         switch (_currentGameState)
         {
             case GameState.PREGAME:
+                Time.timeScale = 1.0f;
                 break;
             case GameState.RUNNING:
+                Time.timeScale = 1.0f;
                 break;
             case GameState.PAUSED:
+                Time.timeScale = 0f;     // Pause simulation when in pause state
                 break;
             default:
                 break;
@@ -156,6 +172,22 @@ public class GameManager : Singleton<GameManager>
     public void StartGame()
     {
         LoadLevel("Main");
+    }
+
+    //  Add a method to enter/exit pause
+    public void TogglePause()
+    {
+        // if (_currentGameState == GameState.RUNNING)
+        // {
+        //     UpdateState(GameState.PAUSED);
+        // }
+        // else
+        // {
+        //     UpdateState(GameState.RUNNING);
+        // }
+
+        // condition ? true : false 上記のコードを一行で書くことができる
+        UpdateState(_currentGameState == GameState.RUNNING ? GameState.PAUSED : GameState.RUNNING);
     }
 }
 

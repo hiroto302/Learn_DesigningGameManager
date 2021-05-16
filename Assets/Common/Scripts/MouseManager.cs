@@ -13,8 +13,27 @@ public class MouseManager : MonoBehaviour
 
     public EventVector3 OnClickEnvironment;
 
+    private bool _userDefaultCursor = false;
+
+    private void Start()
+    {
+        GameManager.Instance.OnGameStateChange.AddListener(HandleGameStateChange);
+    }
+
+    void HandleGameStateChange(GameManager.GameState currentState, GameManager.GameState previousState)
+    {
+        _userDefaultCursor = currentState == GameManager.GameState.PAUSED;
+    }
+
     void Update()
     {
+        // PausedMenu の時、表示するカーソル  : Modify cursor to use pointer when in pause state
+        if (_userDefaultCursor)
+        {
+            Cursor.SetCursor(pointer, new Vector2(16, 16), CursorMode.Auto);
+            return;
+        }
+
         // Raycast into scene
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 50, clickableLayer.value))
