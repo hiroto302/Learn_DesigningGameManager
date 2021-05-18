@@ -17,7 +17,7 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.OnGameStateChange.AddListener(HandleGameStateChange);
+        GameManager.Instance.OnGameStateChange.AddListener(HandleGameStateChange);  // Gameの状態が更新される度に発生する event に処理を追加
     }
 
     // アニメーションイベント : Object のスクリプト内の関数をタイムラインの特定のタイミングで呼びですことができる
@@ -35,6 +35,7 @@ public class MainMenu : MonoBehaviour
         onMainMenuFadeComplete.Invoke(false);
     }
 
+    // Gameの状態が更新された時に呼ばれるメソッド
     void HandleGameStateChange(GameManager.GameState currentState, GameManager.GameState previousState)
     {
         if (previousState == GameManager.GameState.PREGAME && currentState == GameManager.GameState.RUNNING)

@@ -4,9 +4,9 @@ using UnityEngine;
 // using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-// [System.Serializable] public class EventGamState : UnityEvent<GameManager.GameState, GameManager.GameState>{}
+// [System.Serializable] public class EventGamState : UnityEvent<GameManager.GameState, GameManager.GameState>{} Gameの状態が更新された時に発生する event
 
-/*ToDos:
+/*ToDos: step 2
     Add a method to enter/exit pause
     Trigger method via 'escape' key
     Trigger method via pause menu
@@ -19,11 +19,14 @@ using UnityEngine.SceneManagement;
 // この GameManager と同様に Singleton を継承したクラスのオブジェクトを、この子オブジェクトして最初にインスタンス化することで、シーン間で容易にアクセスできるようにする
 public class GameManager : Singleton<GameManager>
 {
+/*ToDos: step 1
     // what level the game is current in
     // load and Unload game levels
     // keep track of the game state
     // generate other persisten system
+*/
 
+    // ゲームの状態
     public enum GameState
     {
         PREGAME,
@@ -34,8 +37,8 @@ public class GameManager : Singleton<GameManager>
     public GameObject[] SystemPrefabs;     // GameManager が生成する他の Systemクラス(singleton) を格納
     public Events.EventGamState OnGameStateChange;
     private List<GameObject> _instancedSystemPrefabs;
-    GameState _currentGameState = GameState.PREGAME;
-    private string _currentLevelName = string.Empty;
+    GameState _currentGameState = GameState.PREGAME;    // 現在のゲームの状態 : 初期値 PREGAME
+    private string _currentLevelName = string.Empty;    // ロードする Scene名
     List<AsyncOperation> _loadOperations;  // Load 時に行う AsyncOperetion を格納
 
     public GameState CurrentGameState
@@ -83,13 +86,12 @@ public class GameManager : Singleton<GameManager>
             // 処理が完了したので、参照を取り除く : メモリーリーク対策
             _loadOperations.Remove(ao);
 
+            // ゲームの状態を RUNNING 更新
             if(_loadOperations.Count == 0)
             {
                 UpdateState(GameState.RUNNING);
             }
 
-            // dispatch message
-            // transition between scenes
         }
 
         Debug.Log("Load Complete.");
@@ -108,10 +110,11 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    // GameManagerのState(状態)を更新
     void UpdateState(GameState state)
     {
-        GameState previousGameState = _currentGameState;
-        _currentGameState = state;
+        GameState previousGameState = _currentGameState; // ロードする前のGameの状態
+        _currentGameState = state;                       // ロードした後のGameの状態
 
         switch (_currentGameState)
         {
@@ -128,7 +131,10 @@ public class GameManager : Singleton<GameManager>
                 break;
         }
 
-        OnGameStateChange.Invoke(_currentGameState, previousGameState);
+        OnGameStateChange.Invoke(_currentGameState, previousGameState);     // Gameの状態が更新された時の event 発生
+
+        // dispatch message
+        // transition between scenes
     }
 
     // SystemPrefab の生成
@@ -187,6 +193,7 @@ public class GameManager : Singleton<GameManager>
         _instancedSystemPrefabs.Clear();            // Destory したら参照を null にすることを忘れずに (List は参照型) : Clean Up って言ってた
     }
 
+    // Main Secene をロードするメソッド : UIManager で使用
     public void StartGame()
     {
         LoadLevel("Main");

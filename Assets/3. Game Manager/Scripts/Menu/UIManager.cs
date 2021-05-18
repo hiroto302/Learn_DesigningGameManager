@@ -28,11 +28,13 @@ public class UIManager : Singleton<UIManager>
 
     private void Update()
     {
+        // Gameの状態がPREGAME(初期の画面)の時のみ, StartGame()を行い, Main Scene に移行できるように制限する
         if(GameManager.Instance.CurrentGameState != GameManager.GameState.PREGAME)
         {
             return;
         }
 
+        // Game開始 : MainScene の Load
         if(Input.GetKeyDown(KeyCode.Space))
         {
             GameManager.Instance.StartGame();
