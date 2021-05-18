@@ -20,15 +20,18 @@ public class MainMenu : MonoBehaviour
         GameManager.Instance.OnGameStateChange.AddListener(HandleGameStateChange);
     }
 
+    // アニメーションイベント : Object のスクリプト内の関数をタイムラインの特定のタイミングで呼びですことができる
+    // MainMenuFadeOutのアニメーションイベントで呼び出される関数
     public void OnFadeOutComplete()
     {
         // Debug.LogWarning("FadeOut Complete");
         onMainMenuFadeComplete.Invoke(true);
     }
+    // MainMenuFadeInのアニメーションイベントで呼び出される関数
     public void OnFadeInComplete()
     {
         // Debug.LogWarning("FadeIn Complete");
-        UIManager.Instance.SetDummyCameraActive(true);
+        UIManager.Instance.SetDummyCameraActive(true);  // DummyCameraを再表示
         onMainMenuFadeComplete.Invoke(false);
     }
 
@@ -53,7 +56,7 @@ public class MainMenu : MonoBehaviour
     }
     public void FadeOut()
     {
-        UIManager.Instance.SetDummyCameraActive(false);
+        UIManager.Instance.SetDummyCameraActive(false); // DummyCamera を非表示
 
         _mainMenuAnimator.Stop();
         _mainMenuAnimator.clip = _fadeOutAnimation;

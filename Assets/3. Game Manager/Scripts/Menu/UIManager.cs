@@ -6,7 +6,7 @@ public class UIManager : Singleton<UIManager>
 {
     [SerializeField] private MainMenu _mainMenu;
     [SerializeField] private PauseMenu _pauseMenu;
-    [SerializeField] private Camera _dummyCamera;
+    [SerializeField] private Camera _dummyCamera;  // boot Scene を表示してるカメラ
 
     public Events.EventFadeComplete OnMainMenuFadeComplete;
 
@@ -40,6 +40,7 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
+    // Dummy カメラの Off/On
     public void SetDummyCameraActive(bool active)
     {
         _dummyCamera.gameObject.SetActive(active);
