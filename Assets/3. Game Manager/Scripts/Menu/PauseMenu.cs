@@ -14,6 +14,7 @@ public class PauseMenu : MonoBehaviour
         QuitButton.onClick.AddListener(HandleQuitClicked);
     }
 
+    // 各ボタンを押した時のイベントが発生する。その時,処理する内容を記述。
     void HandleResumeClicked()
     {
         GameManager.Instance.TogglePause();

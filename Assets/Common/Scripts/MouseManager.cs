@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+// Mouse のカーソル操作を制御
 public class MouseManager : MonoBehaviour
 {
     public LayerMask clickableLayer;
@@ -17,11 +18,13 @@ public class MouseManager : MonoBehaviour
 
     private void Start()
     {
+        // Listener : Game の状態が変更された時呼ばれる event 追加
         GameManager.Instance.OnGameStateChange.AddListener(HandleGameStateChange);
     }
 
     void HandleGameStateChange(GameManager.GameState currentState, GameManager.GameState previousState)
     {
+        // PAUSEの状態(Pause Menu が表示されている時, デフォルトのカーソルを表示)
         _userDefaultCursor = currentState == GameManager.GameState.PAUSED;
     }
 

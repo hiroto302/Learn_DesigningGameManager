@@ -4,6 +4,7 @@ using UnityEngine;
 // using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
+// 下記の記述は、Event を管理するクラス Events に移行
 // [System.Serializable] public class EventGamState : UnityEvent<GameManager.GameState, GameManager.GameState>{} Gameの状態が更新された時に発生する event
 
 /*ToDos: step 2
@@ -14,7 +15,7 @@ using UnityEngine.SceneManagement;
     Modify cursor to use pointer when in pause state
 */
 
-
+// Built a globally accessible Game Manager & SceneManagement & Managed Game State
 // 常にゲーム全般を管理する 「Gamemanager Object」 は最初のシーン（ここでは Boot)でインスタンス化されるように設計している。
 // この GameManager と同様に Singleton を継承したクラスのオブジェクトを、この子オブジェクトして最初にインスタンス化することで、シーン間で容易にアクセスできるようにする
 public class GameManager : Singleton<GameManager>
@@ -59,6 +60,7 @@ public class GameManager : Singleton<GameManager>
 
         InstantiateSystemPrefabs(); // 他のシステムクラスの生成
 
+        // MainMenuのfade処理が完了したことを、UIManager が知らせに来た時に行う処理
         UIManager.Instance.OnMainMenuFadeComplete.AddListener(HandleMainMenuFadeComplete);
 
         // LoadLevel("Main"); メインシーンのロード
@@ -66,6 +68,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Update()
     {
+        // PREGAMEの状態でなければPause 画面に Escape key で移行可能
         if(CurrentGameState == GameManager.GameState.PREGAME)
         {
             return;
@@ -102,10 +105,13 @@ public class GameManager : Singleton<GameManager>
         Debug.Log("Unload Complete.");
     }
 
+    // Fade処理が完了した時に行う処理
     void HandleMainMenuFadeComplete(bool fadeOut)
     {
+        // FadeInした時
         if(!fadeOut)
         {
+            // 現在の読み込んでいたSceneを取り除く
             UnloadLevel(_currentLevelName);
         }
     }
@@ -199,7 +205,7 @@ public class GameManager : Singleton<GameManager>
         LoadLevel("Main");
     }
 
-    //  Add a method to enter/exit pause
+    //  Add a method to enter/exit pause  : Pause Menu へRUNNINGの状態の時のみ移行
     public void TogglePause()
     {
         // if (_currentGameState == GameState.RUNNING)
@@ -215,11 +221,13 @@ public class GameManager : Singleton<GameManager>
         UpdateState(_currentGameState == GameState.RUNNING ? GameState.PAUSED : GameState.RUNNING);
     }
 
+    // 最初のゲーム画面に戻って再スタート
     public void RestartGame()
     {
         UpdateState(GameState.PREGAME);
     }
 
+    // ゲーム終了
     public void QuitGame()
     {
         // implement features for quitting

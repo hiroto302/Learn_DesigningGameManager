@@ -13,7 +13,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private AnimationClip _fadeOutAnimation;
     [SerializeField] private AnimationClip _fadeInAnimation;
 
-    public Events.EventFadeComplete onMainMenuFadeComplete;
+    public Events.EventFadeComplete onMainMenuFadeComplete;  // Fadeが完了した時の event
 
     private void Start()
     {
@@ -25,7 +25,7 @@ public class MainMenu : MonoBehaviour
     public void OnFadeOutComplete()
     {
         // Debug.LogWarning("FadeOut Complete");
-        onMainMenuFadeComplete.Invoke(true);
+        onMainMenuFadeComplete.Invoke(true);        // event 発生 => UIManagerに知らせる
     }
     // MainMenuFadeInのアニメーションイベントで呼び出される関数
     public void OnFadeInComplete()
@@ -43,6 +43,7 @@ public class MainMenu : MonoBehaviour
             FadeOut();
         }
 
+        // Pause 画面より、リスタートボタンが押された時、下記の処理が実行される
         if (previousState != GameManager.GameState.PREGAME && currentState == GameManager.GameState.PREGAME)
         {
             FadeIn();
