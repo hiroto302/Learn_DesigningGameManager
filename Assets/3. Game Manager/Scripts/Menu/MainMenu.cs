@@ -27,6 +27,7 @@ public class MainMenu : MonoBehaviour
         // Debug.LogWarning("FadeOut Complete");
         onMainMenuFadeComplete.Invoke(true);        // event 発生 => UIManagerに知らせる
     }
+
     // MainMenuFadeInのアニメーションイベントで呼び出される関数
     public void OnFadeInComplete()
     {
@@ -50,6 +51,7 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    // FadeIn のアニメーション実行時、それに伴い event で指定した OnFadeInComplete()を実行
     public void FadeIn()
     {
         _mainMenuAnimator.Stop();

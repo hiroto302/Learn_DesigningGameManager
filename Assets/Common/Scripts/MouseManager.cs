@@ -14,7 +14,7 @@ public class MouseManager : MonoBehaviour
 
     public EventVector3 OnClickEnvironment;
 
-    private bool _userDefaultCursor = false;
+    private bool _userDefaultCursor = false;  // デフォルトのカーソルを表示するか
 
     private void Start()
     {
