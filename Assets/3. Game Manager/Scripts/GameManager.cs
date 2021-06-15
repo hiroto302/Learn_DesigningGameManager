@@ -58,7 +58,7 @@ public class GameManager : Singleton<GameManager>
         _instancedSystemPrefabs = new List<GameObject>();
 
 
-        InstantiateSystemPrefabs(); // 他のシステムクラスの生成
+        InstantiateSystemPrefabs(); // 他のシステムクラスの生成  : 生成してから下記のようにSigletoクラスにアクセスすること
 
         // MainMenuのfade処理が完了したことを、UIManager が知らせに来た時に行う処理
         UIManager.Instance.OnMainMenuFadeComplete.AddListener(HandleMainMenuFadeComplete);
